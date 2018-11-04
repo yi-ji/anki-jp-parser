@@ -1,0 +1,2 @@
+cat dumped_vocab.csv | awk -F "\t" 'NR>1{print $7, $8}' | sed 's/"//g' | awk -F "" 'BEGIN{OFS=",";}{if (length($0) > 1){print $1, "*,*",3000,"*,*,*,*,*,*",$1,$2,$2}}' > vocab_dict.csv
+/usr/lib/mecab/mecab-dict-index -m mecab-ipadic-2.7.0-20070801.model -d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd -u parse_japanese/support/anki.dic -f utf-8 -t utf-8 vocab_dict.csv

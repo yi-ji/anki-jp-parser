@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Test</title>
+    </head>
+    <link rel='stylesheet' href='styles-jparser.css' />
+    
+  <body>        
+
+        <div><script>    
+                    function onclickChar(kanji)
+                    {   
+                        
+                        var elements = document.getElementsByClassName(kanji);
+                        var isSuspended = pluginObject.isSuspended(kanji);
+                        
+                        for(var i = elements.length - 1; i >= 0; --i)
+                        {
+                      
+                            if(isSuspended)
+                            {
+                                //alert("currently suspended");
+                                pluginObject.modifyKanji(kanji);
+                                pluginObject.updateDict(kanji);
+                                elements[i].classList.remove("suspended");
+                                elements[i].classList.add("due");
+   
+                            }
+                            else{
+                                var isDue = pluginObject.isDue(kanji);
+                                if(isDue){
+                                   
+                                   var modal_body = pluginObject.getReviewWindow(kanji);
+                                   document.getElementById("myModalBody").innerHTML = modal_body;
+
+                                  
+                                   var modal = document.getElementById("myModal");
+                                   modal.style.display = "block";
+
+                                   var span = document.getElementsByClassName("close")[0];
+                                   span.onclick = function() {
+                                          modal.style.display = "none";
+                                   }
+                                   window.onclick = function(event) {
+                                          if (event.target == modal) {
+                                              modal.style.display = "none";
+                                          }
+                                   }
+                                }    
+                                
+                            }
+                            
+                        }
+                            
+                    }
+                    
+                    function changeState(kanji, value)
+                    {
+
+                            var elements = document.getElementsByClassName(kanji);
+                            if(value == 2)
+                            {
+                                for(var i = elements.length - 1; i >= 0; --i)
+                                {
+                                    contents = elements[i].innerHTML
+                                    elements[i].outerHTML = "<a style= 'text-decoration:none;' href='http://tangorin.com/kanji/" + kanji + "'><span class='" + kanji + " jparser not-due'>" + contents + "</span></a>"
+                                }
+                            }
+                            else
+                            {
+
+                                for(var i = elements.length - 1; i >= 0; --i)
+                                {
+                              
+                                    elements[i].classList.remove("suspended");
+                                    elements[i].classList.add("due");
+                                }
+                            }
+                    }
+                    </script></div>
+                    <div>
+                        <script>
+                        function onButtonClicked(kanji, ease)
+                        {
+                            //alert(ease);
+                            pluginObject.rescheduleCard(ease);
+                            pluginObject.updateDict(kanji);
+                            
+                            var isDue = pluginObject.isDue(kanji);
+                            if(!isDue)
+                            {
+                                var elements = document.getElementsByClassName(kanji);
+                                for(var i = elements.length - 1; i >= 0; --i)
+                                {
+                                    contents = elements[i].innerHTML
+                                    elements[i].outerHTML = "<a style= 'text-decoration:none;' href='http://tangorin.com/kanji/" + kanji + "'><span class='" + kanji + " jparser not-due'>" + contents + "</span></a>"
+                                }
+                            }
+                            var modal = document.getElementById("myModal");
+                            modal.style.display = "none";
+                            
+                        }
+                        </script>    
+                    </div>
+                    <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <span class="close">&times;</span>
+                                  
+                                </div>
+                                <div id="myModalBody" class="modal-body">
+                                </div>
+                            </div>
+                    </div>
+                    </div><span class="あの jparser due" onclick="javascript:onclickCharJParser('あの');">あの<span><table><p>あの</p><p>あの</p><p>that&nbsp;</p></table></span></span><span class="映画 jparser due" onclick="javascript:onclickCharJParser('映画');">映画<span><table><p>映画</p><p>映画[えいが]</p><p>Movie</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/は"><span class="jparser-missing">は<span><table><p>は</p><p>ハ</p><p>(n) tooth; (P)</p></table></span></span></a><span class="有名 jparser due" onclick="javascript:onclickCharJParser('有名');">有名<span><table><p>有名</p><p>有名[ゆうめい]な</p><p>famous</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/です"><span class="jparser-missing">です<span><table><p>です</p><p>デス</p><p>(aux) (pol) be; is; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/が"><span class="jparser-missing">が<span><table><p>が</p><p>ガ</p><p>(prt) indicates sentence subject (occasionally object); indicates possessive (esp. in literary expressions); (prt,conj) but; however; still; and; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/、"><span class="jparser-missing">、<span><table><p>、</p><p>、</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/私"><span class="私 jparser not-due">私<span><table><p>私</p><p>私[わたし]</p><p>I;  me</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/は"><span class="jparser-missing">は<span><table><p>は</p><p>ハ</p><p>(n) tooth; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/つまらない"><span class="jparser-missing">つまらない<span><table><p>つまらない</p><p>ツマラナイ</p><p>(adj-i) (uk) dull; uninteresting; boring; tedious; (uk) insignificant; unimportant; trifling; trivial; worthless; (uk) absurd; foolish; silly; stupid; (uk) useless; pointless; disappointing; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/と"><span class="jparser-missing">と<span><table><p>と</p><p>ト</p><p>(prt,conj) if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle; (n) (abbr) promoted pawn (shogi); (prt) (kyu:) indicates question (sentence end); (P)</p></table></span></span></a><span class="思う jparser due" onclick="javascript:onclickCharJParser('思う');">思い<span><table><p>思う</p><p>思[おも]う</p><p>To think</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/ます"><span class="jparser-missing">まし<span><table><p>ます</p><p>マシ</p><p>(n) measuring container; measure; box (seating at a theatre, etc.); square on a grid; cell of a grid; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/た"><span class="jparser-missing">た<span><table><p>た</p><p>タ</p><p>(n,pref) multi-; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/。"><span class="jparser-missing">。<span><table><p>。</p><p>。</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/私"><span class="私 jparser not-due">私<span><table><p>私</p><p>私[わたし]</p><p>I;  me</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/は"><span class="jparser-missing jparser-right-end">は<span><table><p>は</p><p>ハ</p><p>(n) tooth; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/つまらない"><span class="jparser-missing jparser-right-end">つまらない<span><table><p>つまらない</p><p>ツマラナイ</p><p>(adj-i) (uk) dull; uninteresting; boring; tedious; (uk) insignificant; unimportant; trifling; trivial; worthless; (uk) absurd; foolish; silly; stupid; (uk) useless; pointless; disappointing; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/と"><span class="jparser-missing jparser-right-end">と<span><table><p>と</p><p>ト</p><p>(prt,conj) if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle; (n) (abbr) promoted pawn (shogi); (prt) (kyu:) indicates question (sentence end); (P)</p></table></span></span></a><span class="思う jparser due jparser-right-end" onclick="javascript:onclickCharJParser('思う');">思い<span><table><p>思う</p><p>思[おも]う</p><p>To think</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/ます"><span class="jparser-missing jparser-right-end">まし<span><table><p>ます</p><p>マシ</p><p>(n) measuring container; measure; box (seating at a theatre, etc.); square on a grid; cell of a grid; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/た"><span class="jparser-missing jparser-right-end">た<span><table><p>た</p><p>タ</p><p>(n,pref) multi-; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/。"><span class="jparser-missing jparser-right-end">。<span><table><p>。</p><p>。</p></table></span></span></a><span class="私 jparser not-due jparser-right-end" onclick="javascript:onclickCharJParser('私');">私<span><table><p>私</p><p>私[わたし]</p><p>I;  me</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/は"><span class="jparser-missing jparser-right-end">は<span><table><p>は</p><p>ハ</p><p>(n) tooth; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/つまらない"><span class="jparser-missing jparser-right-end">つまらない<span><table><p>つまらない</p><p>ツマラナイ</p><p>(adj-i) (uk) dull; uninteresting; boring; tedious; (uk) insignificant; unimportant; trifling; trivial; worthless; (uk) absurd; foolish; silly; stupid; (uk) useless; pointless; disappointing; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/と"><span class="jparser-missing">と<span><table><p>と</p><p>ト</p><p>(prt,conj) if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle; (n) (abbr) promoted pawn (shogi); (prt) (kyu:) indicates question (sentence end); (P)</p></table></span></span></a><span class="思う jparser due" onclick="javascript:onclickCharJParser('思う');">思い<span><table><p>思う</p><p>思[おも]う</p><p>To think</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/ます"><span class="jparser-missing">まし<span><table><p>ます</p><p>マシ</p><p>(n) measuring container; measure; box (seating at a theatre, etc.); square on a grid; cell of a grid; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/た"><span class="jparser-missing">た<span><table><p>た</p><p>タ</p><p>(n,pref) multi-; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/。"><span class="jparser-missing">。<span><table><p>。</p><p>。</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/私"><span class="私 jparser not-due">私<span><table><p>私</p><p>私[わたし]</p><p>I;  me</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/は"><span class="jparser-missing">は<span><table><p>は</p><p>ハ</p><p>(n) tooth; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/つまらない"><span class="jparser-missing">つまらない<span><table><p>つまらない</p><p>ツマラナイ</p><p>(adj-i) (uk) dull; uninteresting; boring; tedious; (uk) insignificant; unimportant; trifling; trivial; worthless; (uk) absurd; foolish; silly; stupid; (uk) useless; pointless; disappointing; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/と"><span class="jparser-missing">と<span><table><p>と</p><p>ト</p><p>(prt,conj) if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle; (n) (abbr) promoted pawn (shogi); (prt) (kyu:) indicates question (sentence end); (P)</p></table></span></span></a><span class="思う jparser due" onclick="javascript:onclickCharJParser('思う');">思い<span><table><p>思う</p><p>思[おも]う</p><p>To think</p></table></span></span><a style="text-decoration:none;" href="http://tangorin.com/general/ます"><span class="jparser-missing">まし<span><table><p>ます</p><p>マシ</p><p>(n) measuring container; measure; box (seating at a theatre, etc.); square on a grid; cell of a grid; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/た"><span class="jparser-missing">た<span><table><p>た</p><p>タ</p><p>(n,pref) multi-; (P)</p></table></span></span></a><a style="text-decoration:none;" href="http://tangorin.com/general/。"><span class="jparser-missing">。<span><table><p>。</p><p>。</p></table></span></span></a>
+   
+</html>    
