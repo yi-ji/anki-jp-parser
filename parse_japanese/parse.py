@@ -1,23 +1,23 @@
 #-*- coding: utf-8 -*-
 
-import os, pickle, datetime, codecs, shutil
+import os, pickle, datetime, codecs, shutil, tempfile, time, sys, platform, re, subprocess
+if sys.version_info[0] > 2:
+    from builtins import int as long
 
+import anki
 from aqt import mw              # Anki's main window object
 from aqt.qt import *
 from aqt.utils import showInfo
-from anki.hooks import addHook
-from anki.utils import ids2str
+from anki.hooks import addHook, wrap
+from anki.utils import ids2str, stripHTML, isWin, isMac
 from anki.cards import Card
-from AnkiHelper import *
-from aqt.utils import showInfo
-from anki.hooks import wrap
 from anki.sched import Scheduler
-import tempfile, os, shutil
 from anki import Collection as aopen
-import time
 from aqt.reviewer import Reviewer
-import yomi_dict
-import sys, os, platform, re, subprocess, aqt.utils
+
+from . import AnkiHelper
+from . import yomi_dict
+from .AnkiHelper import *
 
 JPARSER_INDEX_COUNT = 3
 
@@ -42,7 +42,6 @@ MATCHING_FIELD_GRAMMAR = "Expression"
 REFERENCE_FIELDS_GRAMMAR = ["D1", "D2", "W1"]
 ###########################################################################
 
-from anki.utils import stripHTML, isWin, isMac
 #mecabArgs = ['--node-format=%m[%f[7]] ', '--eos-format=\n',
 #            '--unk-format=%m[] ']
 mecabArgs = ['-Ochasen']
@@ -85,7 +84,7 @@ class MecabController(object):
         self.kakasi = KakasiController()
         
     def setup(self):
-        base = "../../addons/parse_japanese/support/"
+        base = os.path.dirname(os.path.realpath(__file__)) + "/support/"
         self.mecabCmd = mungeForPlatform(
             [base + "mecab"] + mecabArgs + [
                 '-d', base, '-r', base + "mecabrc", "-u", base + "anki.dic"])
@@ -466,7 +465,6 @@ class Parser:
     __CssClassOfUnknownKanji = 'jparser-missing'
     
     def load(self):
-
         log("Load Plugin\n")
         
         self.__setupObjectData()
@@ -504,6 +502,8 @@ class Parser:
     def __loadDictFromDeck(self, deck_name, match_field, ref_fields):
 
         deckID = mw.col.decks.byName(deck_name)["id"]
+        print(AnkiHelper.__dict__)
+        print(deckID)
         wholeCards = AnkiHelper.getCards(deckID)
         my_dict = {}
         for card in wholeCards:
@@ -594,7 +594,7 @@ class Parser:
         log("show answer pressed!")
 
         if hasattr(self, 'modifiedItems'):
-            for key, value in self.modifiedItems.iteritems():
+            for key, value in self.modifiedItems.items():
                 jsFunction = "changeStateJParser('%s', %d);" %(key, value)
                 mw.web.eval(jsFunction)
         
@@ -1104,8 +1104,9 @@ def _showQuestion():
         flag = False
         mw.web.page().mainFrame().addToJavaScriptWindowObject("pluginObjectJParser", jsObjectJParser)
 
-mw.reviewer._initWeb=wrap(mw.reviewer._initWeb,_initWeb,"before")
-mw.reviewer._showQuestion=wrap(mw.reviewer._showQuestion,_showQuestion,"before")
+if anki.version < "2.1":
+    mw.reviewer._initWeb=wrap(mw.reviewer._initWeb,_initWeb,"before")
+    mw.reviewer._showQuestion=wrap(mw.reviewer._showQuestion,_showQuestion,"before")
 
 
 #addHook("profileLoaded", addToMenuBar)

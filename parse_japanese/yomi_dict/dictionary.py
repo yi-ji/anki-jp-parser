@@ -18,7 +18,10 @@
 
 import operator
 import sqlite3
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 class Dictionary:
     def __init__(self, filename, index=True):
