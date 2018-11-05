@@ -2,7 +2,7 @@
 
 import os, pickle, datetime, codecs, shutil, tempfile, time, sys, platform, re, subprocess
 if sys.version_info[0] > 2:
-    from builtins import int as long
+    from builtins import str as unicode, int as long
 
 import anki
 from aqt import mw              # Anki's main window object
@@ -187,7 +187,7 @@ class KakasiController(object):
         self.kakasi = None
 
     def setup(self):
-        base = "../../addons/parse_japanese/support/"
+        base = os.path.dirname(os.path.realpath(__file__)) + "/support/"
         self.kakasiCmd = mungeForPlatform(
             [base + "kakasi"] + kakasiArgs)
         os.environ['ITAIJIDICT'] = base + "itaijidict"
@@ -333,6 +333,7 @@ class WordMergeRule:
             if matched == False:
                 break              
         return sequence
+
     def printContent(self):
         self.left.printContent()
         log("=")
@@ -502,8 +503,6 @@ class Parser:
     def __loadDictFromDeck(self, deck_name, match_field, ref_fields):
 
         deckID = mw.col.decks.byName(deck_name)["id"]
-        print(AnkiHelper.__dict__)
-        print(deckID)
         wholeCards = AnkiHelper.getCards(deckID)
         my_dict = {}
         for card in wholeCards:
@@ -565,7 +564,7 @@ class Parser:
             #log(self.cssFileInPlugin)
             f = open(self.cssFileInPlugin, 'r')
             #log(f.read())
-            css = unicode(f.read(), 'utf-8')
+            css = unicode(f.read())
             f.close()
             
         except Exception as e:
@@ -608,7 +607,6 @@ class Parser:
                         
                         for(var i = elements.length - 1; i >= 0; --i)
                         {
-                      
                             if(isSuspended)
                             {
                                 //alert("currently suspended");
