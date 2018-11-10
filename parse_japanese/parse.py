@@ -508,9 +508,12 @@ class Parser:
         for card in wholeCards:
             note = card.note
             ref_note = []
-            for field in ref_fields:
-                ref_note.append(note[field])
-
+            try:
+                for field in ref_fields:
+                    ref_note.append(note[field])
+            except KeyError:
+                print("corrupted card note, has fields:", note.__dict__, "but requires fields:", ref_fields)
+                continue
             my_dict[note[match_field]] = (tuple(ref_note), (card.ivl, card.queue, card.due, card.id, card.odid, card.type))
         return my_dict
 
